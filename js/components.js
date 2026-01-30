@@ -17,9 +17,7 @@ const NavbarHTML = `
             <h2 style="color: var(--color-primary); margin: 0; font-size: 1.5rem;">ScopeDeals</h2>
         </a>
         <button class="mobile-menu-btn" aria-label="Toggle menu">
-            <span></span>
-            <span></span>
-            <span></span>
+            <i class="fa-solid fa-bars"></i>
         </button>
         <ul class="nav-links">
             <li><a href="index.html" data-i18n="nav.home">Home</a></li>

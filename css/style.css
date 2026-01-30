@@ -436,26 +436,29 @@ a {
 }
 
 /* Mobile Menu */
-display: none;
-background: none;
-border: none;
-font-size: 1.5rem;
-cursor: pointer;
-z-index: 1001;
-padding: 10px;
+.mobile-menu-btn {
+    display: none;
+    background: var(--color-primary);
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    padding: 12px;
+    border-radius: 8px;
+    color: white;
+    box-shadow: 0 4px 12px rgba(255, 107, 53, 0.3);
+    transition: all 0.3s ease;
 }
 
-.mobile-menu-btn span {
+.mobile-menu-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(255, 107, 53, 0.4);
+}
+
+.mobile-menu-btn i {
     display: block;
-    width: 35px;
-    /* Increased from 25px */
-    height: 4px;
-    /* Increased from 3px */
-    background-color: var(--color-primary);
-    margin: 6px auto;
-    /* Increased spacing */
-    transition: all 0.3s ease-in-out;
-    border-radius: 4px;
+    width: auto;
+    height: auto;
 }
 
 /* Active state for hamburger animation */
