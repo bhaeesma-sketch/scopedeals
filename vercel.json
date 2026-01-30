@@ -1,0 +1,14 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/login", "dest": "/login.html" },
+    { "src": "/signup", "dest": "/signup.html" },
+    { "src": "/services", "dest": "/services.html" },
+    { "src": "/countries", "dest": "/countries.html" },
+    { "src": "/about", "dest": "/about.html" }
+  ]
+}

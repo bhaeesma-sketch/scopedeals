@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | ScopeDeals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar" style="background: transparent; box-shadow: none;">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.jpg" alt="ScopeDeals">
+            </a>
+            <ul class="nav-links">
+                <!-- Signup link removed for admin only -->
+            </ul>
+        </div>
+    </nav>
+
+    <div class="auth-split-container">
+        <!-- Left Panel -->
+        <div class="auth-left-panel" style="background-image: url('assets/ac-repair.png');">
+            <div class="auth-left-content">
+                <h1>Welcome Back!</h1>
+                <p>Manage your home service bookings with ease.</p>
+            </div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="auth-right-panel">
+            <div class="auth-form-container">
+                <div class="auth-header">
+                    <h2>Admin Login</h2>
+                    <p>Enter your credentials to access the admin panel</p>
+                </div>
+
+                <!-- Social Login -->
+                <!-- Social Login Removed -->
+
+                <form id="loginForm" class="auth-form">
+                    <!-- Email -->
+                    <div class="floating-label-group">
+                        <input type="email" id="email" required placeholder=" ">
+                        <label for="email">Email Address</label>
+                    </div>
+
+                    <!-- Password -->
+                    <div class="floating-label-group">
+                        <input type="password" id="password" required placeholder=" ">
+                        <label for="password">Password</label>
+                        <button type="button" id="togglePassword"
+                            style="position: absolute; right: 10px; top: 1rem; background: none; border: none; cursor: pointer; color: #6c757d;"
+                            aria-label="Toggle password visibility">
+                            <i class="far fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <div class="custom-checkbox" style="margin-bottom: 0;">
+                            <input type="checkbox" id="rememberMe">
+                            <label for="rememberMe">Remember me</label>
+                        </div>
+                        <a href="forgot-password.html"
+                            style="color: var(--color-primary); font-size: 0.9rem; text-decoration: none;">Forgot
+                            Password?</a>
+                    </div>
+
+                    <button type="submit" class="auth-button btn-primary btn-block" id="loginBtn">Login</button>
+                </form>
+
+                <!-- Signup footer removed -->
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="auth.js"></script>
+    <script type="module" src="js/main.js"></script>
+    <script>
+        // Password visibility toggle
+        document.getElementById('togglePassword')?.addEventListener('click', function () {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+    </script>
+</body>
+
+</html>
