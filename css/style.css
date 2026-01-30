@@ -447,12 +447,15 @@ padding: 10px;
 
 .mobile-menu-btn span {
     display: block;
-    width: 25px;
-    height: 3px;
+    width: 35px;
+    /* Increased from 25px */
+    height: 4px;
+    /* Increased from 3px */
     background-color: var(--color-primary);
-    margin: 5px auto;
+    margin: 6px auto;
+    /* Increased spacing */
     transition: all 0.3s ease-in-out;
-    border-radius: 2px;
+    border-radius: 4px;
 }
 
 /* Active state for hamburger animation */
