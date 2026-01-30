@@ -1,0 +1,14 @@
+{
+  "name": "scopedeals",
+  "version": "1.0.0",
+  "description": "Static site for ScopeDeals - local preview and Vercel deployment support.",
+  "scripts": {
+    "start": "npx http-server ./ -p 3000 -c-1",
+    "live": "npx live-server --port=3000",
+    "build": "echo 'No build step required for simple static site'"
+  },
+  "devDependencies": {
+    "http-server": "^0.13.0",
+    "live-server": "^1.2.2"
+  }
+}

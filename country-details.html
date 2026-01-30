@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Details | ScopeDeals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+                <img src="assets/logo.jpg" alt="ScopeDeals">
+            </a>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">☰</button>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="countries.html" class="active">Countries</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html" class="btn btn-primary">Book Now</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <header class="hero" style="height: 40vh; min-height: 300px;">
+        <div class="video-background" id="heroBg">
+            <!-- Image will be set via JS -->
+            <div class="video-overlay"></div>
+        </div>
+        <div class="container hero-content">
+            <h1 class="hero-title" id="countryTitle">Loading...</h1>
+            <p class="hero-subtitle" id="countryDesc">Please wait...</p>
+        </div>
+    </header>
+
+    <section class="section">
+        <div class="container">
+            <div class="auth-split-container" style="min-height: auto; margin-bottom: 2rem;">
+                <!-- Left: Cities List -->
+                <div style="flex: 1; padding-right: 2rem;">
+                    <h2 class="section-title" style="text-align: left; margin-bottom: 1rem;"
+                        data-i18n="details.available_cities">Available Cities</h2>
+                    <p data-i18n="details.select_city_desc">Select your city to proceed with booking:</p>
+                    <div class="cities-grid" id="citiesGrid"
+                        style="display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; margin-top: 1.5rem;">
+                        <!-- Cities will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Right: Advanced Booking Form -->
+                <div
+                    style="flex: 1; background: white; padding: 2rem; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+                    <h2 style="margin-bottom: 1.5rem; color: var(--color-primary);" data-i18n="details.book_service">
+                        Book Service</h2>
+                    <form id="advancedBookingForm">
+                        <div class="form-group">
+                            <label for="citySelect" data-i18n="form.city_area">City / Area</label>
+                            <select id="citySelect" required>
+                                <option value="" data-i18n="form.select_city">Select a City</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="serviceSelect" data-i18n="form.service_required">Service Required</label>
+                            <select id="serviceSelect" required>
+                                <option value="" data-i18n="form.select_service">Select Service</option>
+                                <option data-i18n="services.ac.title" value="AC Repair">AC Repair</option>
+                                <option data-i18n="services.fridge.title" value="Fridge Repair">Fridge Repair</option>
+                                <option value="Washing Machine Repair">Washing Machine Repair</option>
+                                <option data-i18n="services.carpet.title" value="Carpet Cleaning">Carpet Cleaning
+                                </option>
+                                <option data-i18n="services.curtain.title" value="Curtain Cleaning">Curtain Cleaning
+                                </option>
+                                <option data-i18n="common.tag.deep" value="Deep Cleaning">Deep Cleaning</option>
+                            </select>
+                        </div>
+
+                        <!-- Smart Sub-Service (Hidden by default) -->
+                        <div class="form-group" id="subServiceGroup" style="display: none;">
+                            <label for="subServiceSelect" data-i18n="form.specific_type">Specific Type</label>
+                            <select id="subServiceSelect">
+                                <option value="" data-i18n="form.select_type">Select Type</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="propertyType" data-i18n="form.property_type">Property Type (Advanced)</label>
+                            <select id="propertyType" required>
+                                <option value="Apartment" data-i18n="form.property.apartment">Apartment</option>
+                                <option value="Villa" data-i18n="form.property.villa">Villa</option>
+                                <option value="Office" data-i18n="form.property.office">Office</option>
+                                <option value="Shop/Commercial" data-i18n="form.property.shop">Shop/Commercial</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="urgency" data-i18n="form.urgency">Urgency (Advanced)</label>
+                            <select id="urgency" required>
+                                <option value="Standard" data-i18n="form.urgency.standard">Standard (Schedule
+                                    Appointment)</option>
+                                <option value="Emergency" data-i18n="form.urgency.emergency">🚨 Emergency (Immediate)
+                                </option>
+                                <option value="Weekend" data-i18n="form.urgency.weekend">Weekend Appointment</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerName" data-i18n="form.your_name">Your Name</label>
+                            <input type="text" id="customerName" required placeholder="John Doe"
+                                data-i18n-placeholder="contact.form.name.placeholder">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="customerPhone" data-i18n="form.mobile_number">Mobile Number</label>
+                            <input type="tel" id="customerPhone" required placeholder="+971 50 123 4567"
+                                data-i18n-placeholder="contact.form.phone.placeholder">
+                        </div>
+
+                        <button type="submit" class="btn btn-block"
+                            style="background-color: #25D366; border-color: #25D366; color: white; font-size: 1.1rem; padding: 1rem;">
+                            <span data-i18n="form.book_whatsapp">📱 Book via WhatsApp</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 <span data-i18n="footer.rights">ScopeDeals. All rights reserved.</span></p>
+        </div>
+    </footer>
+
+    <script src="js/translations.js"></script>
+    <script src="js/localization.js"></script>
+    <script type="module">
+        import { countryData } from './js/country-data.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize localization
+            if (window.localization) {
+                // Wait for potential async init if needed, though mostly synchronous
+            }
+
+            // Get Country ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const countryId = urlParams.get('id');
+            const data = countryData[countryId];
+
+            if (!data) {
+                window.location.href = 'countries.html';
+                return;
+            }
+
+            const updateCountryContent = () => {
+                const lang = localStorage.getItem('language') || 'en';
+                const isAr = lang === 'ar';
+
+                // Populate Hero
+                document.getElementById('countryTitle').textContent = `${data.flag} ${isAr && data.name_ar ? data.name_ar : data.name}`;
+                document.getElementById('countryDesc').textContent = isAr && data.description_ar ? data.description_ar : data.description;
+
+                // Cities
+                const cities = isAr && data.cities_ar ? data.cities_ar : data.cities;
+
+                // Clear and Re-populate Cities Grid & Select
+                const citiesGrid = document.getElementById('citiesGrid');
+                const citySelect = document.getElementById('citySelect');
+
+                citiesGrid.innerHTML = '';
+                // Keep the first default option in select
+                citySelect.innerHTML = `<option value="">${isAr ? 'اختر مدينة' : 'Select a City'}</option>`;
+
+                cities.forEach(city => {
+                    // Add to Grid
+                    const cityBtn = document.createElement('button');
+                    cityBtn.className = 'btn btn-outline';
+                    cityBtn.style.color = 'var(--color-primary)';
+                    cityBtn.style.borderColor = 'var(--color-primary)';
+                    cityBtn.style.width = '100%';
+                    cityBtn.textContent = city;
+                    cityBtn.onclick = () => {
+                        citySelect.value = city;
+                        document.getElementById('advancedBookingForm').scrollIntoView({ behavior: 'smooth' });
+                    };
+                    citiesGrid.appendChild(cityBtn);
+
+                    // Add to Select
+                    const option = document.createElement('option');
+                    option.value = city;
+                    option.textContent = city;
+                    citySelect.appendChild(option);
+                });
+            };
+
+            // Set background image (static)
+            const heroBg = document.getElementById('heroBg');
+            heroBg.style.background = `url('${data.image}') center/cover no-repeat`;
+
+            // Initial Update
+            updateCountryContent();
+
+            // Listen for language changes
+            window.addEventListener('languageChanged', () => {
+                updateCountryContent();
+            });
+
+
+            // Smart Service Logic
+            const serviceSelect = document.getElementById('serviceSelect');
+            const subServiceGroup = document.getElementById('subServiceGroup');
+            const subServiceSelect = document.getElementById('subServiceSelect');
+
+            const subServices = {
+                "AC Repair": ["Split AC", "Window AC", "Central AC", "Cassette AC"],
+                "Fridge Repair": ["Single Door", "Double Door", "Side-by-Side", "Commercial Freezer"],
+                "Washing Machine Repair": ["Front Load", "Top Load", "Semi-Automatic", "Dryer"],
+                "Carpet Cleaning": ["Persian Carpet", "Synthetic Carpet", "Silk Carpet", "Wool Carpet"],
+                "Curtain Cleaning": ["Cotton", "Silk", "Velvet", "Blinds"],
+                "Deep Cleaning": ["Studio Apartment", "1 BHK", "2 BHK", "3 BHK+", "Villa"]
+            };
+
+            serviceSelect.addEventListener('change', function () {
+                const service = this.value;
+                // Note: subServices are keys, mapped to english values currently.
+                // Improving this for full RTL is complex, keeping basic logic for now.
+                const options = subServices[service];
+
+                subServiceSelect.innerHTML = '<option value="">Select Type</option>';
+
+                if (options) {
+                    subServiceGroup.style.display = 'block';
+                    subServiceSelect.required = true;
+                    options.forEach(opt => {
+                        const el = document.createElement('option');
+                        el.value = opt;
+                        el.textContent = opt;
+                        subServiceSelect.appendChild(el);
+                    });
+                } else {
+                    subServiceGroup.style.display = 'none';
+                    subServiceSelect.required = false;
+                }
+            });
+
+            // Handle Form Submit
+            document.getElementById('advancedBookingForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const city = document.getElementById('citySelect').value;
+                const service = document.getElementById('serviceSelect').value;
+                const subService = document.getElementById('subServiceSelect').value;
+                const property = document.getElementById('propertyType').value;
+                const urgency = document.getElementById('urgency').value;
+                const name = document.getElementById('customerName').value;
+                const phone = document.getElementById('customerPhone').value;
+                const country = data.name;
+
+                // Construct WhatsApp Message
+                let text = `*New Advanced Booking Request*\n\n`;
+                text += `*Name:* ${name}\n`;
+                text += `*Phone:* ${phone}\n`;
+                text += `*Location:* ${city}, ${country}\n`;
+                text += `*Service:* ${service}\n`;
+                if (subService) text += `*Specific Type:* ${subService}\n`;
+                text += `*Property Type:* ${property}\n`;
+                text += `*Urgency:* ${urgency}\n`;
+
+                const encodedText = encodeURIComponent(text);
+                const phoneNumber = "96891978441";
+                const url = `https://wa.me/${phoneNumber}?text=${encodedText}`;
+
+                window.open(url, '_blank');
+            });
+        });
+    </script>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>

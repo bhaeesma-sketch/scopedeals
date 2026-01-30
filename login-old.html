@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ScopeDeals — Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+
+<body>
+  <main>
+    <section class="auth-container">
+      <div class="auth-card">
+        <h2>Welcome Back</h2>
+        <p>Login to manage your bookings</p>
+        <form id="loginForm" class="auth-form">
+          <label for="email">Email</label>
+          <input id="email" type="email" required placeholder="name@example.com" />
+          <label for="password">Password</label>
+          <div style="position: relative;">
+            <input id="password" type="password" required placeholder="••••••••" />
+            <button type="button" id="togglePassword"
+              style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; font-size: 1.2rem;"
+              aria-label="Toggle password visibility">
+              👁️
+            </button>
+          </div>
+          <a href="forgot-password.html"
+            style="display: block; margin-top: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-primary); text-decoration: none;">Forgot
+            Password?</a>
+          <button type="submit">Log in</button>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Sign up</a></p>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="auth.js"></script>
+  <script type="module" src="js/main.js"></script>
+  <script>
+    // Password visibility toggle
+    document.getElementById('togglePassword')?.addEventListener('click', function () {
+      const passwordInput = document.getElementById('password');
+      const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+      passwordInput.setAttribute('type', type);
+      this.textContent = type === 'password' ? '👁️' : '🙈';
+    });
+  </script>
+</body>
+
+</html>
