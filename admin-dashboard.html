@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScopeDeals | Admin Intelligence</title>
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-shield-alt"></i> SCOPE ADMIN
+            </div>
+            <nav>
+                <a href="#" class="nav-item active" id="nav-overview">
+                    <i class="fas fa-home"></i> Overview
+                </a>
+                <a href="#" class="nav-item" id="nav-logs">
+                    <i class="fas fa-list"></i> Activity Logs
+                </a>
+                <a href="#" class="nav-item" id="nav-analytics">
+                    <i class="fas fa-chart-line"></i> Analytics
+                </a>
+                <a href="index.html" class="nav-item">
+                    <i class="fas fa-external-link-alt"></i> Live Site
+                </a>
+            </nav>
+            <a href="#" class="nav-item logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div style="display: flex; align-items: center; width: 100%;">
+                    <i class="fas fa-bars mobile-toggle" id="mobileToggle"></i>
+                    <h1 id="pageTitle" style="margin: 0; font-size: 1.5rem;">Dashboard Overview</h1>
+                </div>
+                <div class="user-profile">
+                    <span id="adminEmail" style="color: var(--text-secondary);">Loading...</span>
+                </div>
+            </header>
+
+            <!-- KPI Cards -->
+            <div class="kpi-grid">
+                <div class="kpi-card">
+                    <div class="kpi-title">Total Page Views</div>
+                    <div class="kpi-value" id="totalViews">0</div>
+                    <div class="kpi-trend trend-up">
+                        <i class="fas fa-arrow-up"></i> Live
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Total Interactions</div>
+                    <div class="kpi-value" id="totalClicks">0</div>
+                    <div class="kpi-trend" style="color: var(--accent);">
+                        <i class="fas fa-mouse-pointer"></i> Clicks
+                    </div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Active Sessions</div>
+                    <div class="kpi-value" id="activeSessions">-</div>
+                    <div class="kpi-trend trend-up">Real-time</div>
+                </div>
+                <div class="kpi-card">
+                    <div class="kpi-title">Conversion Rate</div>
+                    <div class="kpi-value">0%</div>
+                    <div class="kpi-trend trend-down">Needs Setup</div>
+                </div>
+            </div>
+
+            <!-- Charts -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <h3>Traffic History</h3>
+                    <canvas id="trafficChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <h3>Interactions by Type</h3>
+                    <canvas id="interactionChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Recent Logs -->
+            <div class="table-container">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3>Live Activity Feed</h3>
+                    <button class="btn-refresh" id="refreshLogs"
+                        style="background: var(--accent); border: none; padding: 5px 10px; border-radius: 4px; color: white; cursor: pointer;">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Path</th>
+                            <th>Element / Details</th>
+                            <th>User Agent</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logsTableBody">
+                        <tr>
+                            <td colspan="5" style="text-align: center;">Loading logs...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Firebase & Logic -->
+    <script type="module" src="js/admin-dashboard.js"></script>
+</body>
+
+</html>
