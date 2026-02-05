@@ -92,7 +92,7 @@ function injectDemoData(logsArray) {
                 type: 'pageview',
                 path: ['/index.html', '/services.html', '/contact.html', '/countries.html'][Math.floor(Math.random() * 4)],
                 title: 'ScopeDeals | Home Services',
-                userAgent: ['iPhone', 'Android', 'Windows', 'Mac'][Math.floor(Math.random() * 4)],
+                userAgent: ['iPhone', 'Android', 'Windows', 'ScopeDeals App (APK)'][Math.floor(Math.random() * 4)],
                 timestamp: { toDate: () => date } // Mock Firestore timestamp
             });
         } else {
@@ -105,7 +105,7 @@ function injectDemoData(logsArray) {
                     text: 'Book Now',
                     detail: service
                 },
-                userAgent: ['iPhone', 'Android'][Math.floor(Math.random() * 2)],
+                userAgent: ['iPhone', 'Android', 'ScopeDeals App (APK)'][Math.floor(Math.random() * 3)],
                 timestamp: { toDate: () => date }
             });
         }
@@ -163,6 +163,7 @@ function renderTable(logs) {
 
 function cleanUA(ua) {
     if (!ua) return 'Unknown';
+    if (ua.includes('ScopeDeals App')) return 'App (APK)'; // New App detection
     if (ua.includes('iPhone')) return 'iPhone';
     if (ua.includes('Android')) return 'Android';
     if (ua.includes('Macintosh')) return 'Mac';
