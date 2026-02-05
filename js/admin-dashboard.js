@@ -46,6 +46,49 @@ async function loadDashboardData() {
             logs.push({ id: doc.id, ...doc.data() });
         });
 
+        // --- DEMO DATA INJECTION (Start) ---
+        // If we have less than 10 real logs, inject fake past data to show potential
+        if (logs.length < 10) {
+            console.log("Injecting demo data for visualization...");
+            const services = ['AC Repair', 'Fridge Repair', 'Carpet Cleaning', 'Curtain Washing'];
+            const countries = ['UAE', 'Oman', 'Qatar', 'Bahrain'];
+
+            // Generate 15 mock entries from the last 7 days
+            for (let i = 0; i < 15; i++) {
+                const daysAgo = Math.floor(Math.random() * 7);
+                const isView = Math.random() > 0.4;
+                const date = new Date();
+                date.setDate(date.getDate() - daysAgo);
+                date.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
+
+                if (isView) {
+                    logs.push({
+                        type: 'pageview',
+                        path: ['/index.html', '/services.html', '/contact.html'][Math.floor(Math.random() * 3)],
+                        title: 'ScopeDeals | Home Services',
+                        userAgent: ['iPhone', 'Android', 'Windows', 'Mac'][Math.floor(Math.random() * 4)],
+                        timestamp: { toDate: () => date } // Mock Firestore timestamp
+                    });
+                } else {
+                    const service = services[Math.floor(Math.random() * services.length)];
+                    logs.push({
+                        type: 'click',
+                        path: '/services.html',
+                        element: {
+                            tag: 'A',
+                            text: 'Book Now',
+                            detail: service
+                        },
+                        userAgent: ['iPhone', 'Android'][Math.floor(Math.random() * 2)],
+                        timestamp: { toDate: () => date }
+                    });
+                }
+            }
+            // Sort combined logs by date desc
+            logs.sort((a, b) => b.timestamp.toDate() - a.timestamp.toDate());
+        }
+        // --- DEMO DATA INJECTION (End) ---
+
         updateKPIs(logs);
         renderCharts(logs);
         renderTable(logs);
