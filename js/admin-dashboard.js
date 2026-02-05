@@ -46,48 +46,8 @@ async function loadDashboardData() {
             logs.push({ id: doc.id, ...doc.data() });
         });
 
-        // --- DEMO DATA INJECTION (Start) ---
-        // If we have less than 10 real logs, inject fake past data to show potential
-        if (logs.length < 10) {
-            console.log("Injecting demo data for visualization...");
-            const services = ['AC Repair', 'Fridge Repair', 'Carpet Cleaning', 'Curtain Washing'];
-            const countries = ['UAE', 'Oman', 'Qatar', 'Bahrain'];
-
-            // Generate 15 mock entries from the last 7 days
-            for (let i = 0; i < 15; i++) {
-                const daysAgo = Math.floor(Math.random() * 7);
-                const isView = Math.random() > 0.4;
-                const date = new Date();
-                date.setDate(date.getDate() - daysAgo);
-                date.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
-
-                if (isView) {
-                    logs.push({
-                        type: 'pageview',
-                        path: ['/index.html', '/services.html', '/contact.html'][Math.floor(Math.random() * 3)],
-                        title: 'ScopeDeals | Home Services',
-                        userAgent: ['iPhone', 'Android', 'Windows', 'Mac'][Math.floor(Math.random() * 4)],
-                        timestamp: { toDate: () => date } // Mock Firestore timestamp
-                    });
-                } else {
-                    const service = services[Math.floor(Math.random() * services.length)];
-                    logs.push({
-                        type: 'click',
-                        path: '/services.html',
-                        element: {
-                            tag: 'A',
-                            text: 'Book Now',
-                            detail: service
-                        },
-                        userAgent: ['iPhone', 'Android'][Math.floor(Math.random() * 2)],
-                        timestamp: { toDate: () => date }
-                    });
-                }
-            }
-            // Sort combined logs by date desc
-            logs.sort((a, b) => b.timestamp.toDate() - a.timestamp.toDate());
-        }
-        // --- DEMO DATA INJECTION (End) ---
+        // Inject Demo Data if needed (less than 10 records)
+        if (logs.length < 10) injectDemoData(logs);
 
         updateKPIs(logs);
         renderCharts(logs);
@@ -95,19 +55,71 @@ async function loadDashboardData() {
 
     } catch (error) {
         console.error("Error fetching logs:", error);
+
+        // Fallback to demo data on error so dashboard isn't empty
+        const demoLogs = [];
+        injectDemoData(demoLogs);
+
+        updateKPIs(demoLogs);
+        renderCharts(demoLogs);
+        renderTable(demoLogs);
+
+        // Show toaster for error
         if (error.code === 'failed-precondition') {
-            // Index might be missing?
-            alert("Firestore Index might be required for sorting. Check console.");
+            // Index missing
+            console.warn("Firestore Index might be required. URL in console.");
+        } else {
+            // Other error
+            console.warn("Using demo mode due to fetch error.");
         }
     }
+}
+
+function injectDemoData(logsArray) {
+    console.log("Injecting demo data...");
+    const services = ['AC Repair', 'Fridge Repair', 'Carpet Cleaning', 'Curtain Washing'];
+
+    // Generate 25 mock entries
+    for (let i = 0; i < 25; i++) {
+        const daysAgo = Math.floor(Math.random() * 7);
+        const isView = Math.random() > 0.4;
+        const date = new Date();
+        date.setDate(date.getDate() - daysAgo);
+        date.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
+
+        if (isView) {
+            logsArray.push({
+                type: 'pageview',
+                path: ['/index.html', '/services.html', '/contact.html', '/countries.html'][Math.floor(Math.random() * 4)],
+                title: 'ScopeDeals | Home Services',
+                userAgent: ['iPhone', 'Android', 'Windows', 'Mac'][Math.floor(Math.random() * 4)],
+                timestamp: { toDate: () => date } // Mock Firestore timestamp
+            });
+        } else {
+            const service = services[Math.floor(Math.random() * services.length)];
+            logsArray.push({
+                type: 'click',
+                path: '/services.html',
+                element: {
+                    tag: 'A',
+                    text: 'Book Now',
+                    detail: service
+                },
+                userAgent: ['iPhone', 'Android'][Math.floor(Math.random() * 2)],
+                timestamp: { toDate: () => date }
+            });
+        }
+    }
+    // Sort
+    logsArray.sort((a, b) => b.timestamp.toDate() - a.timestamp.toDate());
 }
 
 function updateKPIs(logs) {
     const totalViews = logs.filter(l => l.type === 'pageview').length;
     const totalClicks = logs.filter(l => l.type === 'click').length;
 
-    document.getElementById('totalViews').innerText = totalViews + (logs.length === 100 ? '+' : '');
-    document.getElementById('totalClicks').innerText = totalClicks + (logs.length === 100 ? '+' : '');
+    document.getElementById('totalViews').innerText = totalViews;
+    document.getElementById('totalClicks').innerText = totalClicks;
 }
 
 function renderTable(logs) {
@@ -126,7 +138,6 @@ function renderTable(logs) {
         if (log.timestamp && log.timestamp.toDate) {
             dateStr = log.timestamp.toDate().toLocaleString();
         } else if (log.timestamp) {
-            // Handle client-side timestamp fallback if needed, or server timestamp latency
             dateStr = "Just now";
         }
 
