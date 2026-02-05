@@ -10,7 +10,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500;700&display=swap"
         rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 
@@ -20,9 +19,7 @@
             <a href="index.html" class="logo">
                 <img src="assets/logo.jpg" alt="ScopeDeals">
             </a>
-            <ul class="nav-links">
-                <!-- Signup link removed for admin only -->
-            </ul>
+            <ul class="nav-links"></ul>
         </div>
     </nav>
 
@@ -39,121 +36,82 @@
         <div class="auth-right-panel">
             <div class="auth-form-container">
                 <div class="auth-header">
-                    <h2>Admin Login</h2>
-                    <p>Enter your credentials to access the admin panel</p>
+                    <h2>Admin Access</h2>
+                    <p>Enter your PIN code to unlock.</p>
                 </div>
 
-                <!-- Social Login -->
-                <!-- Social Login Removed -->
-
-                <form id="adminLoginForm" class="auth-form">
-                    <!-- Email -->
-                    <div class="floating-label-group">
-                        <input type="email" id="email" required placeholder=" ">
-                        <label for="email">Email Address</label>
+                <form id="pinForm" class="auth-form">
+                    <!-- PIN Input -->
+                    <div class="pin-display-container" style="text-align: center; margin-bottom: 2rem;">
+                        <input type="password" id="pinInput" placeholder="PIN"
+                            style="font-size: 2.5rem; letter-spacing: 0.8rem; text-align: center; width: 100%; padding: 10px; background: transparent; border: none; border-bottom: 2px solid var(--color-primary); color: #333;"
+                            maxlength="4" inputmode="numeric" autofocus autocomplete="off">
                     </div>
 
-                    <!-- Password -->
-                    <div class="floating-label-group">
-                        <input type="password" id="password" required placeholder=" ">
-                        <label for="password">Password</label>
-                        <button type="button" id="togglePassword"
-                            style="position: absolute; right: 10px; top: 1rem; background: none; border: none; cursor: pointer; color: #6c757d;"
-                            aria-label="Toggle password visibility">
-                            <i class="far fa-eye"></i>
-                        </button>
-                    </div>
+                    <button type="submit" class="auth-button btn-primary btn-block" id="loginBtn">Unlock</button>
 
-                    <!-- Remember Me & Forgot Password -->
-                    <div
-                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
-                        <div class="custom-checkbox" style="margin-bottom: 0;">
-                            <input type="checkbox" id="rememberMe">
-                            <label for="rememberMe">Remember me</label>
-                        </div>
-                        <a href="forgot-password.html"
-                            style="color: var(--color-primary); font-size: 0.9rem; text-decoration: none;">Forgot
-                            Password?</a>
-                    </div>
-
-                    <button type="submit" class="auth-button btn-primary btn-block" id="loginBtn">Login</button>
+                    <p style="text-align: center; margin-top: 1rem; color: #6c757d; font-size: 0.8rem;">
+                        Default Access PIN: <b>8888</b>
+                    </p>
                 </form>
 
-                <!-- Signup footer removed -->
             </div>
         </div>
     </div>
 
-    <script type="module" src="auth.js"></script>
+    <!-- Removed module imports that are not needed for PIN access logic -->
     <script type="module" src="js/main.js"></script>
     <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-        import { getAuth, signInWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+        // PIN Logic
+        const PIN_CODE = "8888"; // Set your desired PIN here
 
-        // Same config as auth.js
-        const firebaseConfig = {
-            apiKey: "AIzaSyCwCVf1MuczY-BDe8S_pf9TEp8IPBiLpuY",
-            authDomain: "web-auth-d0b6b.firebaseapp.com",
-            projectId: "web-auth-d0b6b",
-            storageBucket: "web-auth-d0b6b.firebasestorage.app",
-            messagingSenderId: "739979758800",
-            appId: "1:739979758800:web:d4a22a2d4bf6f2aff962d5",
-            measurementId: "G-Q8L2DFXL3L"
-        };
+        const pinForm = document.getElementById('pinForm');
+        const pinInput = document.getElementById('pinInput');
+        const btn = document.getElementById('loginBtn');
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        // Password visibility toggle
-        document.getElementById('togglePassword')?.addEventListener('click', function () {
-            const passwordInput = document.getElementById('password');
-            const icon = this.querySelector('i');
-
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-
-        // Admin Login Handler
-        const loginForm = document.getElementById('adminLoginForm');
-        if (loginForm) {
-            loginForm.addEventListener('submit', async (e) => {
-                e.preventDefault();
-
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
-                const btn = document.getElementById('loginBtn');
-                const originalText = btn.innerText;
-
-                btn.disabled = true;
-                btn.innerText = 'Authenticating...';
-
-                try {
-                    await signInWithEmailAndPassword(auth, email, password);
-                    // Success
-                    const toast = document.createElement('div');
-                    toast.className = 'toast success'; // using existing styles if available
-                    toast.style.cssText = "position: fixed; top: 20px; right: 20px; background: #10b981; color: white; padding: 1rem; border-radius: 8px; z-index: 9999;";
-                    toast.innerText = "Access Granted. Redirecting to Dashboard...";
-                    document.body.appendChild(toast);
-
-                    setTimeout(() => {
-                        window.location.href = 'admin-dashboard.html';
-                    }, 1500);
-
-                } catch (error) {
-                    console.error(error);
-                    alert("Login Failed: " + error.message);
-                    btn.disabled = false;
-                    btn.innerText = originalText;
+        // Auto-focus and auto-submit on 4 digits
+        if (pinInput) {
+            pinInput.focus();
+            pinInput.addEventListener('input', (e) => {
+                if (e.target.value.length === 4) {
+                    attemptLogin();
                 }
             });
+        }
+
+        if (pinForm) {
+            pinForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                attemptLogin();
+            });
+        }
+
+        function attemptLogin() {
+            const enteredPin = pinInput.value;
+
+            if (enteredPin === PIN_CODE) {
+                // Success
+                btn.innerText = "Accepted";
+                btn.style.background = "#10b981"; // Green
+
+                // Set Session Token
+                sessionStorage.setItem('scope_admin_access', 'true');
+
+                // Redirect
+                setTimeout(() => {
+                    window.location.href = 'admin-dashboard.html';
+                }, 500);
+            } else {
+                // Fail
+                pinInput.value = "";
+                btn.innerText = "Wrong PIN";
+                btn.style.background = "#ef4444"; // Red
+
+                setTimeout(() => {
+                    btn.innerText = "Unlock";
+                    btn.style.background = ""; // Reset
+                }, 1000);
+            }
         }
     </script>
 </body>

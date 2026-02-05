@@ -17,20 +17,20 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 const logsCol = collection(db, 'site_logs');
 
-// Auth Check
-onAuthStateChanged(auth, (user) => {
-    if (!user) {
-        window.location.href = 'admin-login.html';
-    } else {
-        document.getElementById('adminEmail').innerText = user.email;
-        loadDashboardData();
-    }
-});
+// Session Access Check (Simple PIN Token)
+if (!sessionStorage.getItem('scope_admin_access')) {
+    // Redirect if not unlocked via PIN
+    window.location.href = 'admin-login.html';
+} else {
+    // Logged in
+    document.getElementById('adminEmail').innerText = "Admin (Unlocked)";
+    loadDashboardData();
+}
 
 // Logout
-document.getElementById('logoutBtn').addEventListener('click', async (e) => {
+document.getElementById('logoutBtn').addEventListener('click', (e) => {
     e.preventDefault();
-    await signOut(auth);
+    sessionStorage.removeItem('scope_admin_access');
     window.location.href = 'admin-login.html';
 });
 
